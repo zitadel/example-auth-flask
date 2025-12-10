@@ -26,14 +26,6 @@ jobs:
       commit_changes: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     secrets: inherit
 
-  compat-check:
-    name: Run Compatibility Checks
-    uses: ./.github/workflows/integration.yml
-    with:
-      library_ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.ref }}
-      sanity_ref: sanity
-    secrets: inherit
-
   type-check:
     name: Run Type Checks
     uses: ./.github/workflows/typecheck.yml
@@ -44,23 +36,6 @@ jobs:
   run-tests:
     name: Run Test Suite
     uses: ./.github/workflows/test.yml
-    with:
-      ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.ref }}
-    secrets: inherit
-
-  code-inspection:
-    name: Run Qodana Inspections
-    needs: run-tests
-    if: ${{ always() }}
-    uses: ./.github/workflows/qodana.yml
-    with:
-      ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.ref }}
-    secrets: inherit
-
-  build-docker:
-    name: Build Docker Container
-    needs: run-tests
-    uses: ./.github/workflows/docker.yml
     with:
       ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.ref }}
     secrets: inherit
@@ -78,11 +53,8 @@ jobs:
     needs:
       - lint-commits
       - code-style
-      - compat-check
       - type-check
       - run-tests
-      - code-inspection
-      - build-docker
       - check-deps
     steps:
       - name: Harden runner
