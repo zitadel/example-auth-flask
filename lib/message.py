@@ -1,7 +1,10 @@
-from typing import Dict, List, Union
+"""Error message handling for authentication flows."""
+
+from __future__ import annotations
 
 
-def _signin_error_message(error_code: str) -> Dict[str, str]:
+def _signin_error_message(error_code: str) -> dict[str, str]:
+    """Get error message for sign-in flow errors."""
     signin_errors = {
         "signin",
         "oauthsignin",
@@ -20,7 +23,7 @@ def _signin_error_message(error_code: str) -> Dict[str, str]:
     if error_code == "oauthaccountnotlinked":
         return {
             "heading": "Account Not Linked",
-            "message": ("To confirm your identity, sign in with the same account you used originally."),
+            "message": "To confirm your identity, sign in with the same account you used originally.",
         }
 
     if error_code == "emailsignin":
@@ -47,11 +50,12 @@ def _signin_error_message(error_code: str) -> Dict[str, str]:
     }
 
 
-def _auth_error_message(error_code: str) -> Dict[str, str]:
+def _auth_error_message(error_code: str) -> dict[str, str]:
+    """Get error message for general authentication errors."""
     if error_code == "configuration":
         return {
             "heading": "Server Error",
-            "message": ("There is a problem with the server configuration. Check the server logs for more information."),
+            "message": "There is a problem with the server configuration. Check the server logs for more information.",
         }
 
     if error_code == "accessdenied":
@@ -63,7 +67,7 @@ def _auth_error_message(error_code: str) -> Dict[str, str]:
     if error_code == "verification":
         return {
             "heading": "Sign-in Link Invalid",
-            "message": ("The sign-in link is no longer valid. It may have been used already or it may have expired."),
+            "message": "The sign-in link is no longer valid. It may have been used already or it may have expired.",
         }
 
     return {
@@ -72,8 +76,14 @@ def _auth_error_message(error_code: str) -> Dict[str, str]:
     }
 
 
-def get_message(error_input: Union[str, List[str], None], category: str) -> Dict[str, str]:
-    raw = error_input[0] if isinstance(error_input, list) and error_input else error_input
+def get_message(error_input: str | list[str] | None, category: str) -> dict[str, str]:
+    """Retrieve a user-friendly error message based on error code and category."""
+    raw: str | None
+    if isinstance(error_input, list) and error_input:
+        raw = error_input[0]
+    else:
+        raw = error_input if isinstance(error_input, str) else None
+
     error_code = str(raw).lower() if raw is not None else "default"
 
     if category == "signin-error":

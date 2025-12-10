@@ -1,11 +1,10 @@
 {% extends "layout.html" %}
 {% block content %}
-<!--suppress HtmlUnknownTarget -->
 <header class="bg-white border-b border-gray-200">
   <div class="max-w-7xl mx-auto px-6 py-4">
     <div class="flex items-center space-x-3">
       <img
-        src="/static/app-logo.svg"
+        src="{{ url_for('static', filename='app-logo.svg') }}"
         alt="App Icon"
         width="40"
         height="40"
@@ -23,8 +22,8 @@
           PKCE Authentication Demo
         </h1>
         <p class="text-xl text-gray-600 mb-8">
-          This application demonstrates an PKCE authentication flow with
-          Zitadel. Perfect for learning OAuth 2.0 security patterns and
+          This application demonstrates a PKCE authentication flow with
+          ZITADEL. Perfect for learning OAuth 2.0 security patterns and
           integrating with your own application.
         </p>
 
@@ -33,7 +32,6 @@
             <div
               class="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center"
             >
-              <!--suppress HtmlDeprecatedAttribute -->
               <svg
                 class="w-5 h-5 text-blue-600"
                 fill="currentColor"
@@ -47,10 +45,8 @@
               </svg>
             </div>
             <div>
-              <h3 class="text-lg font-semibold text-gray-900 mb-1">Secure by
-                Design</h3>
-              <p class="text-gray-600">PKCE prevents authorization code
-                interception attacks without requiring client secrets.</p>
+              <h3 class="text-lg font-semibold text-gray-900 mb-1">Secure by Design</h3>
+              <p class="text-gray-600">PKCE prevents authorization code interception attacks without requiring client secrets.</p>
             </div>
           </div>
 
@@ -58,7 +54,6 @@
             <div
               class="flex-shrink-0 w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center"
             >
-              <!--suppress HtmlDeprecatedAttribute -->
               <svg
                 class="w-5 h-5 text-green-600"
                 fill="currentColor"
@@ -72,10 +67,8 @@
               </svg>
             </div>
             <div>
-              <h3 class="text-lg font-semibold text-gray-900 mb-1">Standards
-                Compliant</h3>
-              <p class="text-gray-600">Built on OAuth 2.0 and OpenID Connect
-                specifications for maximum compatibility.</p>
+              <h3 class="text-lg font-semibold text-gray-900 mb-1">Standards Compliant</h3>
+              <p class="text-gray-600">Built on OAuth 2.0 and OpenID Connect specifications for maximum compatibility.</p>
             </div>
           </div>
 
@@ -83,7 +76,6 @@
             <div
               class="flex-shrink-0 w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center"
             >
-              <!--suppress HtmlDeprecatedAttribute -->
               <svg
                 class="w-5 h-5 text-purple-600"
                 fill="currentColor"
@@ -97,10 +89,8 @@
               </svg>
             </div>
             <div>
-              <h3 class="text-lg font-semibold text-gray-900 mb-1">Developer
-                Friendly</h3>
-              <p class="text-gray-600">Quick to integrate with comprehensive
-                documentation and examples.</p>
+              <h3 class="text-lg font-semibold text-gray-900 mb-1">Developer Friendly</h3>
+              <p class="text-gray-600">Quick to integrate with comprehensive documentation and examples.</p>
             </div>
           </div>
         </div>
@@ -113,7 +103,7 @@
                 class="w-80 h-32 bg-white rounded-lg flex items-center justify-center mx-auto mb-6"
               >
                 <img
-                  src="/static/openid-logo.svg"
+                  src="{{ url_for('static', filename='openid-logo.svg') }}"
                   alt="OpenID"
                   width="288"
                   height="112"
@@ -128,7 +118,6 @@
                 type="submit"
                 class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition duration-200 flex items-center justify-center space-x-2 mb-6 cursor-pointer"
               >
-                <!--suppress HtmlDeprecatedAttribute -->
                 <svg
                   class="w-5 h-5 text-white"
                   aria-hidden="true"
@@ -149,8 +138,7 @@
             </form>
 
             <div class="text-center">
-              <p class="text-sm text-gray-500 mb-4">What happens when you click
-                the button:</p>
+              <p class="text-sm text-gray-500 mb-4">What happens when you click the button:</p>
               <div class="text-left space-y-2">
                 <div class="flex items-center text-xs text-gray-600">
                   <span
@@ -162,7 +150,7 @@
                   <span
                     class="w-4 h-4 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xs font-semibold mr-2"
                   >2</span>
-                  Redirect to Zitadel authorization
+                  Redirect to ZITADEL authorization
                 </div>
                 <div class="flex items-center text-xs text-gray-600">
                   <span
@@ -183,7 +171,7 @@
           <div class="mt-8 text-center">
             <p class="text-sm text-gray-500">
               Powered by
-              <span class="font-semibold text-gray-700">Zitadel</span>
+              <span class="font-semibold text-gray-700">ZITADEL</span>
               •
               <a
                 href="https://zitadel.com/docs/guides/integrate/oauth-recommended-flows"
@@ -203,8 +191,8 @@
       <div class="flex items-center space-x-2">
         <span class="text-sm text-gray-600">Powered by</span>
         <img
-          src="/static/zitadel-logo.svg"
-          alt="Zitadel"
+          src="{{ url_for('static', filename='zitadel-logo.svg') }}"
+          alt="ZITADEL"
           width="295"
           height="81"
           class="h-12 w-auto"
@@ -229,12 +217,28 @@
     const loginButton = document.getElementById('loginButton');
     const buttonText = document.getElementById('buttonText');
 
-    loginForm.onsubmit = function () {
+    loginForm.onsubmit = async (e) => {
+      e.preventDefault();
       loginButton.disabled = true;
       buttonText.textContent = 'Loading...';
-      // No CSRF fetch, just submit normally
+      try {
+        const { csrfToken } = await fetch('/auth/csrf').then(r => r.json());
+        const input = Object.assign(
+          document.createElement('input'),
+          {
+            type: 'hidden',
+            name: 'csrfToken',
+            value: csrfToken
+          }
+        );
+        loginForm.appendChild(input);
+        loginForm.submit();
+      } catch (err) {
+        alert('Login failed. Please try again.');
+        loginButton.disabled = false;
+        buttonText.textContent = 'Login';
+      }
     };
   });
 </script>
-
 {% endblock %}
