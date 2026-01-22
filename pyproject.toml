@@ -28,16 +28,21 @@ requests = ">=2.32.0,<3.0.0"
 [tool.poetry.group.dev.dependencies]
 pytest = ">=7.2.1"
 pytest-cov = ">=4.0.0"
-mypy = ">=1.5"
 ruff = ">=0.12.4"
 fawltydeps = "0.19.0"
-types-authlib = "^1.6.5.20251005"
+ty = ">=0.0.4"
 
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+[tool.ty.environment]
+python-version = "3.9"
+root = ["."]
+
+[tool.ty.src]
+respect-ignore-files = true
+include = ["app"]
+exclude = []
 
 [tool.pytest.ini_options]
+cache_dir = ".pytest"
 testpaths = ["test", "spec"]
 python_files = "test_*.py *_spec.py"
 addopts = [
@@ -52,12 +57,8 @@ junit_family = "xunit2"
 data_file = "build/coverage/.coverage"
 omit = []
 
-[tool.mypy]
-files = ["."]
-strict = true
-exclude = ["build", "dist", ".venv", ".devbox"]
-
 [tool.ruff]
+cache-dir = ".ruff"
 line-length = 130
 fix = true
 target-version = "py39"
@@ -71,8 +72,9 @@ ignore = ["S101"]  # Ignore assert statements
 ignore_unused = [
   "fawltydeps",
   "requests",
-  "mypy",
   "pytest-cov",
   "pytest",
-  "ruff"
+  "ruff",
+  "ty"
 ]
+
