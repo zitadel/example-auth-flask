@@ -3,7 +3,7 @@
   "packages": [
     "uv@latest",
     "lefthook@latest",
-    "python39@latest"
+    "python310@latest"
   ],
   "env": {
     "UV_CACHE_DIR": "$PWD/.uv"
