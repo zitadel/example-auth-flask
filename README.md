@@ -22,7 +22,7 @@ Before you begin, ensure you have the following:
 
 #### System Requirements
 
-- Python (v3.9 or later is recommended)
+- Python (v3.10 or later is recommended)
 - uv package manager
 
 #### Account Setup
