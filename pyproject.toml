@@ -11,7 +11,7 @@ dependencies = [
 ]
 
 [project.urls]
-repository = "https://github.com/zitadel/example-flask-auth"
+repository = "https://github.com/zitadel/example-auth-flask"
 
 [dependency-groups]
 dev = [
