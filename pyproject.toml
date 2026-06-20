@@ -8,7 +8,7 @@ dependencies = [
   "Flask>=3.0,<4.0",
   "Authlib>=1.6.12,<2.0.0",
   "python-dotenv>=1.0.0,<2.0.0",
-  "requests>=2.32.0,<3.0.0"
+  "requests>=2.34.2,<3.0.0"
 ]
 
 [project.urls]
@@ -16,11 +16,11 @@ repository = "https://github.com/zitadel/example-auth-flask"
 
 [dependency-groups]
 dev = [
-  "pytest>=9.0.3",
+  "pytest>=9.1.1",
   "pytest-cov>=4.0.0",
-  "ruff>=0.12.4",
+  "ruff>=0.15.18",
   "fawltydeps==0.20.0",
-  "ty>=0.0.4",
+  "ty>=0.0.51",
 ]
 
 [tool.ty.environment]
@@ -33,7 +33,7 @@ include = ["app"]
 exclude = []
 
 [build-system]
-requires = ["setuptools>=69"]
+requires = ["setuptools>=82.0.1"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
